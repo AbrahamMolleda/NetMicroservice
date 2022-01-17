@@ -37,6 +37,13 @@ namespace Servicios.API.Libreria
             services.AddTransient<IAutorRepository, AutorRepository>();
             services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
             services.AddControllers();
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsRule", rule =>
+                {
+                    rule.AllowAnyHeader().AllowAnyMethod().WithOrigins("*");
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +55,7 @@ namespace Servicios.API.Libreria
             }
 
             app.UseRouting();
+            app.UseCors("CorsRule");
 
             app.UseAuthorization();
 
